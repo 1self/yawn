@@ -6,7 +6,7 @@ var showGraph = function(){
 	if(localStorage.streamid !== undefined){
 		var visualizationUrl = URI + "/v1/streams/" 
 								+ localStorage.streamid
-								+ "/events/self/report/mean(temperature)/daily/barchart?readToken="
+								+ "/events/self/report/sum(yawn)/daily/barchart?readToken="
 								+ localStorage.readtoken;
 
 		var iframe = document.getElementById("visualization");
@@ -37,7 +37,7 @@ var logHelloWorld = function (){
                     "objectTags": ["self"],
                     "actionTags": ["report"],
                     "properties": {
-                        "temperature": parseInt(document.getElementById('temp').value)
+                        "yawn": parseInt(document.getElementById('temp').value)
                     }
                 };
 
@@ -79,7 +79,7 @@ var logHelloWorld = function (){
 </head>
 <body>
 <div>
-	<h1>1self temperature</h1>
+	<h1>1self yawn</h1>
 	<input id="temp" type="number" value="how hot are you?">
 	<input type="button" value="log" onclick="logHelloWorld()">
 	<div></div>
