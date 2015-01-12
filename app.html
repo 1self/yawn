@@ -1,0 +1,89 @@
+<head>
+<script>
+var URI="https://api.1self.co";
+
+var showGraph = function(){
+	if(localStorage.streamid !== undefined){
+		var visualizationUrl = URI + "/v1/streams/" 
+								+ localStorage.streamid
+								+ "/events/self/report/mean(temperature)/daily/barchart?readToken="
+								+ localStorage.readtoken;
+
+		var iframe = document.getElementById("visualization");
+		iframe.src = visualizationUrl;
+	}
+}
+
+document.addEventListener("DOMContentLoaded", function(event) { 
+  showGraph();
+});
+
+var logHelloWorld = function (){
+	var xmlhttp = new XMLHttpRequest();
+	if(localStorage.streamid === undefined){
+		xmlhttp.open("POST",URI + "/v1/streams", false);
+		xmlhttp.setRequestHeader("Authorization", "1selfnoise:12345678");
+		xmlhttp.send();
+		var response = JSON.parse(xmlhttp.response);
+		localStorage.streamid = response.streamid;
+		localStorage.readtoken = response.readToken;
+		localStorage.writetoken = response.writeToken;
+	}
+
+	var helloWorldEvent = {
+                    "dateTime": new Date().toISOString(),
+                    "source": "Hello, 1self",
+                    "version": "1.0.0",
+                    "objectTags": ["self"],
+                    "actionTags": ["report"],
+                    "properties": {
+                        "temperature": parseInt(document.getElementById('temp').value)
+                    }
+                };
+
+    xmlhttp.open("POST", URI + "/v1/streams/" 
+    					+ localStorage.streamid
+    					+ "/events"
+    					, false);
+    xmlhttp.setRequestHeader("Authorization", localStorage.writetoken);
+    xmlhttp.setRequestHeader("Content-Type", "application/json");
+    xmlhttp.send(JSON.stringify(helloWorldEvent));
+
+	showGraph();
+	}
+
+</script>
+<style>
+	input{
+		border: 2px solid grey;
+		border-radius: 8px;
+		height: 30px;
+		width: 200px;
+	}
+
+	h1{
+		margin-top: 100px;
+		font-family: helvetica
+	}
+
+	div{
+		text-align: center;
+	}
+
+	iframe{
+		width: 320px;
+		height: 568px;
+		margin-top: 50px;
+	}
+</style>
+</head>
+<body>
+<div>
+	<h1>1self temperature</h1>
+	<input id="temp" type="number" value="how hot are you?">
+	<input type="button" value="log" onclick="logHelloWorld()">
+	<div></div>
+	<iframe id="visualization">
+	</iframe>
+</div>
+</body>

@@ -1,0 +1,22 @@
+/* CSS declarations go here */
+input{
+		border: 2px solid grey;
+		border-radius: 8px;
+		height: 30px;
+		width: 200px;
+	}
+
+	h1{
+		margin-top: 100px;
+		font-family: helvetica
+	}
+
+	div{
+		text-align: center;
+	}
+
+	iframe{
+		width: 320px;
+		height: 568px;
+		margin-top: 50px;
+	}
